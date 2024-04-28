@@ -1,0 +1,11 @@
+<div>Directivas de atributo</div>
+<h2>NgClass</h2>
+<button (click)="toggleActive()">Toggle Active</button>
+<div>
+    <span [class.redText]="active">Hello</span>
+</div>
+<div>
+    active: {{ active }}
+</div>
+<h2>NgStyle</h2>
+<span [style]="redTextStyle">Hello</span>
