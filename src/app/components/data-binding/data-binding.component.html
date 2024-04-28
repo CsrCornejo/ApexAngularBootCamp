@@ -1,0 +1,10 @@
+<div>Data-binding</div>
+<h2>Event binding</h2>
+<button (click)="triggerEvent()">Click me</button>
+<h2>One way data binding</h2>
+<input type="text" [value]="oneWayText">
+<h2>Two way data binding</h2>
+<input type="text" [(ngModel)]="oneWayText">
+<div>
+    <span>Valor de la variable {{oneWayText}}</span>
+</div>
