@@ -23,7 +23,9 @@
       </button>
     </mat-form-field>
 
-    <ng-container *ngIf="filteredItems$ | async as filteredItems">
+    <ng-container
+      *ngIf="filteredItems$ | async as filteredItems; else loadingRef"
+    >
       <mat-list *ngIf="filteredItems.length; else noItemsRef">
         <div mat-subheader>{{ listTitleLabel }}</div>
         <mat-list-item *ngFor="let item of filteredItems">
@@ -37,10 +39,12 @@
           <div matListItemTitle>{{ item.title | titlecase }}</div>
           <div matListItemLine>{{ item.description }}</div>
           <div matListItemMeta class="item-meta-wrap">
-            <span class="item-sample-price">{{ getSamplePrice(item.prices) }}</span>
+            <span class="item-sample-price">{{
+              getSamplePrice(item.prices)
+            }}</span>
             <button mat-icon-button (click)="test()">
-                <mat-icon>read_more</mat-icon>
-              </button>
+              <mat-icon>read_more</mat-icon>
+            </button>
           </div>
         </mat-list-item>
       </mat-list>
@@ -51,5 +55,11 @@
         </mat-card>
       </ng-template>
     </ng-container>
+
+    <ng-template #loadingRef>
+        <div class="spinner-container">
+            <mat-spinner color="accent" [diameter]="40"></mat-spinner>
+        </div>
+    </ng-template>
   </mat-card-content>
 </mat-card>

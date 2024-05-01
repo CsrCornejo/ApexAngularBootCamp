@@ -4,6 +4,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { combineLatest, map, Observable, startWith, Subject } from 'rxjs';
@@ -19,6 +20,7 @@ import { ItemsService } from '../../app-data/items/item.service';
     MatIconModule,
     MatInputModule,
     MatButtonModule,
+    MatProgressSpinnerModule,
     CommonModule,
     FormsModule,
   ],
