@@ -55,4 +55,11 @@ export class ItemListComponent {
   protected filterChangeHandler(event: string): void {
     this.filterSubject$$.next(event);
   }
+
+  protected getSamplePrice(prices: { [tag: string]: number; }) {
+    return Object.values(prices)[0];
+  }
+  test() {
+    throw new Error('Method not implemented.');
+    }
 }

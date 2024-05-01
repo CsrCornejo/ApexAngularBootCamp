@@ -27,8 +27,21 @@
       <mat-list *ngIf="filteredItems.length; else noItemsRef">
         <div mat-subheader>{{ listTitleLabel }}</div>
         <mat-list-item *ngFor="let item of filteredItems">
-          <mat-icon matListItemIcon>face</mat-icon>
+          <img
+            matListItemAvatar
+            alt=""
+            [src]="item.photos[0]"
+            width="40"
+            height="40"
+          />
           <div matListItemTitle>{{ item.title | titlecase }}</div>
+          <div matListItemLine>{{ item.description }}</div>
+          <div matListItemMeta class="item-meta-wrap">
+            <span class="item-sample-price">{{ getSamplePrice(item.prices) }}</span>
+            <button mat-icon-button (click)="test()">
+                <mat-icon>read_more</mat-icon>
+              </button>
+          </div>
         </mat-list-item>
       </mat-list>
       <!-- No items -->
