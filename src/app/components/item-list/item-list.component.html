@@ -5,12 +5,38 @@
   <mat-card-content>
     <p>{{ contentLabel }}</p>
 
-    <mat-list>
+    <mat-form-field>
+      <mat-label>{{ filterLabel }}</mat-label>
+      <input
+        matInput
+        type="text"
+        [(ngModel)]="filterValue"
+        (ngModelChange)="filterChangeHandler($event)"
+      />
+      <button
+        *ngIf="filterValue"
+        matSuffix
+        mat-icon-button
+        (click)="filterValue = ''; filterChangeHandler('')"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <ng-container *ngIf="filteredItems$ | async as filteredItems">
+      <mat-list *ngIf="filteredItems.length; else noItemsRef">
         <div mat-subheader>{{ listTitleLabel }}</div>
-        <mat-list-item *ngFor="let album of items$ | async">
+        <mat-list-item *ngFor="let item of filteredItems">
           <mat-icon matListItemIcon>face</mat-icon>
-          <div matListItemTitle>{{ album.title | titlecase }}</div>
+          <div matListItemTitle>{{ item.title | titlecase }}</div>
         </mat-list-item>
       </mat-list>
+      <!-- No items -->
+      <ng-template #noItemsRef>
+        <mat-card>
+          <mat-card-content>{{ noItemsLabel }}</mat-card-content>
+        </mat-card>
+      </ng-template>
+    </ng-container>
   </mat-card-content>
 </mat-card>
