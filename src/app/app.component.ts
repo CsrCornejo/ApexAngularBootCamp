@@ -1,14 +1,14 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, MatToolbarModule],
+  imports: [RouterOutlet, RouterLink, MatToolbarModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.sass'
+  styleUrl: './app.component.sass',
 })
 export class AppComponent implements OnInit {
   title = 'ApexAngularBootCamp';
@@ -16,10 +16,9 @@ export class AppComponent implements OnInit {
 
   private http: HttpClient = inject(HttpClient);
 
-  ngOnInit () {
-    this.http.get('/api/items').subscribe(data => {
+  ngOnInit() {
+    this.http.get('/api/items').subscribe((data) => {
       console.log(data);
     });
   }
-
 }

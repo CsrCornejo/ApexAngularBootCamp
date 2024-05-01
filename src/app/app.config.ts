@@ -9,5 +9,12 @@ import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { AppData } from './app-data/app-data';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes), provideAnimationsAsync(), importProvidersFrom(HttpClientModule, InMemoryWebApiModule.forRoot(AppData, { delay: 1000 }))]
+  providers: [
+    provideRouter(routes),
+    provideAnimationsAsync(),
+    importProvidersFrom(
+      HttpClientModule,
+      InMemoryWebApiModule.forRoot(AppData, { delay: 1000 }),
+    ),
+  ],
 };

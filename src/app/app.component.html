@@ -1,3 +1,6 @@
 <mat-toolbar color="primary">
-  <span>{{appName}}</span>
+  <span class="app-name" routerLink="/">{{ appName }}</span>
 </mat-toolbar>
+<div class="container">
+  <router-outlet></router-outlet>
+</div>

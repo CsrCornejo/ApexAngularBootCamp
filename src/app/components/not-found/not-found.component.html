@@ -1,0 +1,13 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>{{ titleLabel | uppercase }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <p>{{ contentLabel }}</p>
+  </mat-card-content>
+  <mat-card-actions align="end">
+    <button mat-raised-button color="accent" routerLink="/">
+      {{ actionButtonLabel }}
+    </button>
+  </mat-card-actions>
+</mat-card>
