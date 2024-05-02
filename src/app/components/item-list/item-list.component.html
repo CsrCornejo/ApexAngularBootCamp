@@ -13,13 +13,13 @@
         matInput
         type="text"
         [(ngModel)]="filterValue"
-        (ngModelChange)="filterChangeHandler($event)"
+        (ngModelChange)="filterChangeHandler($event); currentPage = 1"
       />
       <button
         *ngIf="filterValue"
         matSuffix
         mat-icon-button
-        (click)="filterValue = ''; filterChangeHandler('')"
+        (click)="filterValue = ''; filterChangeHandler(''); currentPage = 1"
       >
         <mat-icon>close</mat-icon>
       </button>
@@ -56,7 +56,7 @@
         >
           <mat-list *ngIf="filteredItems.length; else noItemsRef">
             <div mat-subheader>{{ listTitleLabel }}</div>
-            <mat-list-item *ngFor="let item of filteredItems">
+            <mat-list-item *ngFor="let item of filteredItems | paginate: currentPage">
               <img
                 matListItemAvatar
                 alt=""
@@ -76,6 +76,7 @@
               </div>
             </mat-list-item>
           </mat-list>
+          <app-pagination [(currentPage)]="currentPage" [itemsLength]="filteredItems.length"></app-pagination>
         </mat-grid-tile>
         <!-- No items -->
         <ng-template #noItemsRef>

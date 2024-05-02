@@ -18,6 +18,8 @@ import { combineLatest, map, Observable, startWith, Subject } from 'rxjs';
 import { ItemT } from '../../app-data/items/item.type';
 import { ItemsService } from '../../app-data/items/item.service';
 import { RouterModule } from '@angular/router';
+import { PaginatePipe } from '../../pipes/paginate.pipe';
+import { PaginationComponent } from '../pagination/pagination.component';
 
 @Component({
   selector: 'app-item-list',
@@ -34,6 +36,8 @@ import { RouterModule } from '@angular/router';
     CommonModule,
     FormsModule,
     RouterModule,
+    PaginatePipe,
+    PaginationComponent,
   ],
   templateUrl: './item-list.component.html',
   styleUrl: './item-list.component.sass',
@@ -78,6 +82,7 @@ export class ItemListComponent {
   }>;
 
   protected routerOutletIsActivated!: boolean;
+  protected currentPage: number = 1;
 
   protected filterChangeHandler(event: string): void {
     this.filterSubject$$.next(event);
