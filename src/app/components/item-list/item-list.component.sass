@@ -12,3 +12,18 @@ mat-form-field
     width: 100%
     display: flex
     justify-content: center
+
+mat-grid-tile
+    border: 2px solid #d3d3d3
+    overflow: auto
+    text-align: left
+
+    &.without-border
+        border: 0
+
+    ::ng-deep .mat-grid-tile-content
+        display: block
+        padding: 1em
+
+        mat-list
+            padding-bottom: 3em

@@ -1,9 +1,16 @@
+import {
+  BreakpointObserver,
+  Breakpoints,
+  BreakpointState,
+} from '@angular/cdk/layout';
 import { Component } from '@angular/core';
+import { LayoutModule } from '@angular/cdk/layout';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatGridListModule } from '@angular/material/grid-list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -16,12 +23,14 @@ import { RouterModule } from '@angular/router';
   selector: 'app-item-list',
   standalone: true,
   imports: [
+    LayoutModule,
     MatCardModule,
     MatListModule,
     MatIconModule,
     MatInputModule,
     MatButtonModule,
     MatProgressSpinnerModule,
+    MatGridListModule,
     CommonModule,
     FormsModule,
     RouterModule,
@@ -35,7 +44,15 @@ export class ItemListComponent {
   protected readonly listTitleLabel: string = 'Items';
   private items$: Observable<Array<ItemT>> = this.itemsService.items$;
 
-  public constructor(private readonly itemsService: ItemsService) {}
+  public constructor(private readonly itemsService: ItemsService, private readonly breakpointObserver: BreakpointObserver) {
+    this.isAtLeastMediumBreakpoint$ = this.breakpointObserver
+      .observe([Breakpoints.Medium, Breakpoints.Large, Breakpoints.XLarge])
+      .pipe(
+        map((breakpointState: BreakpointState): { matches: boolean } => ({
+          matches: breakpointState.matches,
+        }))
+      );
+  }
 
   protected filterValue: string = '';
   protected readonly filterLabel: string = 'Filter items...';
@@ -56,8 +73,20 @@ export class ItemListComponent {
     }),
   );
 
+  protected readonly isAtLeastMediumBreakpoint$!: Observable<{
+    matches: boolean;
+  }>;
+
+  protected routerOutletIsActivated!: boolean;
+
   protected filterChangeHandler(event: string): void {
     this.filterSubject$$.next(event);
+  }
+
+  protected toggleRouterOutletIsActivated(activate: boolean): void {
+    queueMicrotask((): void => {
+      this.routerOutletIsActivated = activate;
+    });
   }
 
   protected getSamplePrice(prices: { [tag: string]: number; }) {
