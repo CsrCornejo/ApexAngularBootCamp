@@ -4,21 +4,33 @@ import { ItemT } from '../../app-data/items/item.type';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ItemsService } from '../../app-data/items/item.service';
 import { CommonModule } from '@angular/common';
-
+import { MatDividerModule } from '@angular/material/divider';
+import { MatCardModule } from '@angular/material/card';
+import { MatListModule } from '@angular/material/list';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-item-detail',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    MatDividerModule,
+    MatCardModule,
+    MatListModule,
+    MatProgressSpinnerModule,
+  ],
   templateUrl: './item-detail.component.html',
-  styleUrl: './item-detail.component.sass'
+  styleUrl: './item-detail.component.sass',
 })
 export class ItemDetailComponent implements AfterViewInit {
+  protected readonly titleLabel: string = 'Item details';
+  protected readonly loadingLabel: string = 'Loading item...';
+
   protected itemDetail$: Observable<ItemT> = this.itemsService.itemDetail$;
 
   public constructor(
     private readonly activatedRoute: ActivatedRoute,
-    private readonly itemsService: ItemsService
+    private readonly itemsService: ItemsService,
   ) {}
 
   public ngAfterViewInit(): void {
