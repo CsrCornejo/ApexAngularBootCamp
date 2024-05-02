@@ -52,7 +52,7 @@ export class ItemsService {
     )
   );
 
-  public selectUser(id: ItemT['id']): void {
+  public selectItem(id: ItemT['id']): void {
     this.itemSelectedSubject$$.next(id);
   }
 }

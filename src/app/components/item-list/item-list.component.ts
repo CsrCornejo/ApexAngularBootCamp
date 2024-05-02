@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { combineLatest, map, Observable, startWith, Subject } from 'rxjs';
 import { ItemT } from '../../app-data/items/item.type';
 import { ItemsService } from '../../app-data/items/item.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-item-list',
@@ -23,6 +24,7 @@ import { ItemsService } from '../../app-data/items/item.service';
     MatProgressSpinnerModule,
     CommonModule,
     FormsModule,
+    RouterModule,
   ],
   templateUrl: './item-list.component.html',
   styleUrl: './item-list.component.sass',

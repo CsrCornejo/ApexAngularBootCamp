@@ -42,7 +42,7 @@
             <span class="item-sample-price">{{
               getSamplePrice(item.prices)
             }}</span>
-            <button mat-icon-button (click)="test()">
+            <button mat-icon-button [routerLink]="[item.id]">
               <mat-icon>read_more</mat-icon>
             </button>
           </div>
@@ -54,6 +54,7 @@
           <mat-card-content>{{ noItemsLabel }}</mat-card-content>
         </mat-card>
       </ng-template>
+      <router-outlet></router-outlet>
     </ng-container>
 
     <ng-template #loadingRef>
