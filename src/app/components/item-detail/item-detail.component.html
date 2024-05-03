@@ -11,29 +11,42 @@
       >
       <mat-divider></mat-divider>
       <mat-list-item class="description-field"
-        ><strong class="description-title" matListItemTitle>Description:</strong> <span class="no-wrap" matListItemLine>{{ itemDetail.description }}</span></mat-list-item
+        ><strong class="description-title" matListItemTitle
+          >Description:</strong
+        >
+        <span class="no-wrap" matListItemLine>{{
+          itemDetail.description
+        }}</span></mat-list-item
       >
       <mat-divider></mat-divider>
       <mat-list-item
-        ><strong>Prices:</strong></mat-list-item
+        ><strong [ngClass]="{ 'text-red': itemDetail.offerDiscount }"
+          >Prices:</strong
+        ></mat-list-item
       >
       @for (price of itemDetail.prices | keyvalue; track price) {
-        <mat-list-item
-        ><strong>{{price.key}}</strong> {{ price.value | rounding | currency: 'MXN' }}</mat-list-item
-      >
+        <mat-list-item>
+          <strong>{{ price.key }}</strong>
+          <span
+            class="ml-5"
+            [ngClass]="{ 'item-discounted': itemDetail.offerDiscount }"
+            >{{ price.value | rounding | currency: "MXN" }}</span
+          >
+          @if (itemDetail.offerDiscount) {
+            <span
+              class="ml-5"
+              [ngClass]="{ 'text-red': itemDetail.offerDiscount }"
+              >{{ getDiscountedPrice(price.value, itemDetail.offerDiscount) | rounding | currency: "MXN" }}</span
+            >
+          }
+        </mat-list-item>
       }
       <mat-divider></mat-divider>
     </mat-list>
     <div class="photo-container">
-        @for (photo of itemDetail.photos; track photo) {
-            <img
-            matListItemAvatar
-            alt=""
-            [src]="photo"
-            width="60"
-            height="60"
-            />
-          }
+      @for (photo of itemDetail.photos; track photo) {
+        <img matListItemAvatar alt="" [src]="photo" width="60" height="60" />
+      }
     </div>
   </mat-card-content>
 </mat-card>

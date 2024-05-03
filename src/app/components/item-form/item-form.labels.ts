@@ -2,6 +2,7 @@ export const RESUME_FORM_LABELS: Record<string, string> = {
     item: 'Item',
     title: 'Title',
     description: 'Description',
+    offerDiscount: 'Discount %',
 
     clear: 'Clear',
     submit: 'Submit',
@@ -18,4 +19,5 @@ export const RESUME_FORM_LABELS: Record<string, string> = {
 
     requiredErrorField: 'Required Field',
     patternErrorField: 'Invalid character on this field',
+    invalidPercentageErrorField: 'Invalid percentage (up to 2 digits)',
 }

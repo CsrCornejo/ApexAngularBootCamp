@@ -15,14 +15,4 @@ export type ItemT = {
   offerDiscount?: number;
 };
 
-// Maybe will be useful later
-export type ItemFormT = {
-  id: string;
-  title: string;
-  prices: Array<PriceT>;
-  photos: Array<PhotosT>;
-  description: string;
-  offerDiscount?: number;
-}
-
 export type ItemIdT = Pick<ItemT, 'id' | 'title'>;

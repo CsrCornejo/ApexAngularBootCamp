@@ -40,4 +40,8 @@ export class ItemDetailComponent implements AfterViewInit {
       this.itemsService.selectItem(params['id']);
     });
   }
+
+  protected getDiscountedPrice(price: number, offerDiscount: number = 0) {
+    return price * (1 - (offerDiscount / 100));
+  }
 }

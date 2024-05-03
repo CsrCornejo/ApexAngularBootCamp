@@ -79,7 +79,7 @@
                 }}</span>
                 @if (item.offerDiscount) {
                   <span class="item-sample-price" [style]="{ color: 'red', 'margin-left': '5px' }">{{
-                    getSamplePrice(item.prices) | rounding | currency: 'MXN'
+                    getSamplePrice(item.prices, item.offerDiscount) | rounding | currency: 'MXN'
                   }}</span>
                 }
                 <button mat-icon-button [routerLink]="[item.id]">

@@ -1,9 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
+  AbstractControl,
   FormArray,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
+  ValidationErrors,
   ValidatorFn,
   Validators,
 } from '@angular/forms';
@@ -56,8 +58,16 @@ export class ItemFormComponent implements OnInit, OnDestroy {
     ),
   ];
 
+  protected validatePercentage(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+    if (!value) return null;
+
+    const isValid = /^\d{1,2}$/.test(value); // Matches 1 or 2 digits
+  
+    return isValid ? null : { invalidPercentage: true };
+  }
+
   protected itemForm: ItemFormGroupT = new FormGroup({
-    id: new FormControl(''),
     title: new FormControl('', {
       nonNullable: true,
       validators: this.sentenceValidators,
@@ -66,6 +76,7 @@ export class ItemFormComponent implements OnInit, OnDestroy {
       nonNullable: true,
       validators: this.sentenceValidators,
     }),
+    offerDiscount: new FormControl(0, [this.validatePercentage]),
     photos: new FormArray([this.getNewPhoto()], Validators.minLength(1)),
   });
 
@@ -98,6 +109,22 @@ export class ItemFormComponent implements OnInit, OnDestroy {
     });
   }
 
+  // This removes the attributes that have null values
+  // Ex if the offerDiscount: null, it will not be included so the object has the expected type for the service
+  // offerDiscount service type is optional or number, cannot be null
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private cleanEmpty(obj: any): any {
+    if (Array.isArray(obj)) {
+      return obj
+        .map((v) => (v && typeof v === 'object') ? this.cleanEmpty(v) : v)
+        .filter((v) => !(v == null));
+    } else {
+      return Object.entries(obj)
+        .map(([k, v]) => [k, v && typeof v === 'object' ? this.cleanEmpty(v) : v])
+        .reduce((a, [k, v]) => (v == null ? a : { ...a, [k]: v }), {});
+    }
+  }
+
   protected onSubmit(event: SubmitEvent, form: ItemFormGroupT): void {
     console.log('%c\nonSubmit', 'color: SpringGreen');
     console.log('event: %O', event);
@@ -117,8 +144,10 @@ export class ItemFormComponent implements OnInit, OnDestroy {
         "https://api.slingacademy.com/public/sample-photos/2.jpeg",
       ],
       description: 'Song in different languages perfect for education.',
-      offerDiscount: 20,
+      offerDiscount: 22,
     };
-    this.itemsService.addItem(exampleItem);
+    const cleanedObj = this.cleanEmpty(exampleItem);
+    console.log(cleanedObj);
+    this.itemsService.addItem(cleanedObj);
   }
 }
