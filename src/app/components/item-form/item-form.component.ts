@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RESUME_FORM_LABELS } from './item-form.labels';
 import { ItemFormGroupT } from './item-form.type';
 import { MatButtonModule } from '@angular/material/button';
@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { NgTemplateOutlet } from '@angular/common';
 // import {
 //   MatAccordion,
 //   MatExpansionModule,
@@ -25,6 +26,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatIconModule,
     MatInputModule,
     MatButtonModule,
+    NgTemplateOutlet,
   ],
   templateUrl: './item-form.component.html',
   styleUrl: './item-form.component.sass',
@@ -35,14 +37,20 @@ export class ItemFormComponent {
 
   protected itemForm: ItemFormGroupT = new FormGroup({
     id: new FormControl(''),
-    title: new FormControl(''),
-    description: new FormControl(''),
+    title: new FormControl('', [
+      Validators.required
+      // Validators.pattern(/^[a-zA-Z0-9]+$/),
+    ]),
+    description: new FormControl('', [
+      Validators.required
+    ]),
   });
 
   protected onSubmit(event: SubmitEvent, form: ItemFormGroupT): void {
     console.log('%c\nonSubmit', 'color: SpringGreen');
     console.log('event: %O', event);
     console.log('form: %O', form);
-    console.log('this.resumeForm: %O', this.itemForm);
+    console.log('this.itemForm: %O', this.itemForm);
+    console.log(this.itemForm.value);
   }
 }

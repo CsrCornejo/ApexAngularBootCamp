@@ -15,4 +15,7 @@ export const RESUME_FORM_LABELS: Record<string, string> = {
     removePrice: 'Remove price',
     prices: 'Prices',
     price: 'Price',
+
+    requiredErrorField: 'Required Field',
+    patternErrorField: 'Invalid character on this field',
 }
