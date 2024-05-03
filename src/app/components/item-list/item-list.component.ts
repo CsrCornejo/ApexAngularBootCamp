@@ -15,7 +15,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { BehaviorSubject, combineLatest, map, Observable, startWith, Subject } from 'rxjs';
-import { ItemT } from '../../app-data/items/item.type';
+import { ItemT } from '../../entities/item.type';
 import { ItemsService } from '../../app-data/items/item.service';
 import { RouterModule } from '@angular/router';
 import { PaginatePipe } from '../../pipes/paginate.pipe';

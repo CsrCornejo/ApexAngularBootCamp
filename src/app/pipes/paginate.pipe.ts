@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { ItemT } from '../app-data/items/item.type';
+import { ItemT } from '../entities/item.type';
 
 @Pipe({
   name: 'paginate',

@@ -1,6 +1,6 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ItemT } from '../../app-data/items/item.type';
+import { ItemT } from '../../entities/item.type';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ItemsService } from '../../app-data/items/item.service';
 import { CommonModule } from '@angular/common';

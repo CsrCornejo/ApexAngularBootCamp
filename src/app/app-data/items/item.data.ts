@@ -1,4 +1,4 @@
-import { ItemT } from './item.type';
+import { ItemT } from '../../entities/item.type';
 
 export class ItemData {
   public static items: Array<ItemT> = [
