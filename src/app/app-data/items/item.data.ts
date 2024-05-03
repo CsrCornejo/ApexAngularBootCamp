@@ -261,7 +261,7 @@ export class ItemData {
       offerDiscount: 10,
     },
     {
-      id: 'item19',
+      id: 'item20',
       title: 'Electrocardiogram machine EX',
       prices: {
         'EX': 12312.12,
@@ -274,7 +274,7 @@ export class ItemData {
       description: 'Best electrocardiogram machine on stores, perfect for your hospital with the best insurance up to 10 years after purchase.',
     },
     {
-      id: 'item20',
+      id: 'item21',
       title: 'Song of the day past',
       prices: {
         'Eng': 50.12,

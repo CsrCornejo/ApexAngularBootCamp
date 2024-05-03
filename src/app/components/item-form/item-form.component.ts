@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   FormArray,
   FormControl,
@@ -40,9 +40,12 @@ import { Router } from '@angular/router';
   templateUrl: './item-form.component.html',
   styleUrl: './item-form.component.sass',
 })
-export class ItemFormComponent {
+export class ItemFormComponent implements OnInit, OnDestroy {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   protected label: any = RESUME_FORM_LABELS;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private itemsUpdatedSubscription: any;
 
   private sentenceValidators: Array<ValidatorFn> = [Validators.required];
 
@@ -86,6 +89,14 @@ export class ItemFormComponent {
     private readonly itemsService: ItemsService,
     private router: Router
   ) {}
+  ngOnDestroy(): void {
+    this.itemsUpdatedSubscription.unsubscribe();
+  }
+  ngOnInit(): void {
+    this.itemsUpdatedSubscription = this.itemsService.itemsUpdated$.subscribe((e) => {
+      this.router.navigate(['/items', e]);
+    });
+  }
 
   protected onSubmit(event: SubmitEvent, form: ItemFormGroupT): void {
     console.log('%c\nonSubmit', 'color: SpringGreen');
@@ -109,6 +120,5 @@ export class ItemFormComponent {
       offerDiscount: 20,
     };
     this.itemsService.addItem(exampleItem);
-    this.router.navigate(['/', 'items']);
   }
 }

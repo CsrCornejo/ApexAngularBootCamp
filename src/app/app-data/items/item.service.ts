@@ -1,4 +1,4 @@
-import { combineLatest, map, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable, Subject } from 'rxjs';
 import { inject, Injectable } from '@angular/core';
 import { ItemT, ItemIdT } from '../../entities/item.type';
 import { HttpClient } from '@angular/common/http';
@@ -12,14 +12,27 @@ export class ItemsService {
     ItemT['id']
   >();
 
+  private itemsSubject$: BehaviorSubject<ItemT[]> = new BehaviorSubject<
+    ItemT[]
+  >([]);
+
+  public itemsUpdated$: Subject<string> = new Subject<string>();
+
   private itemSelected$: Observable<ItemT['id']> =
     this.itemSelectedSubject$$.asObservable();
 
-  private http: HttpClient = inject(HttpClient);
+  public readonly items$: Observable<Array<ItemT>> =
+    this.itemsSubject$.asObservable();
 
-  public readonly items$: Observable<Array<ItemT>> = this.http.get<
-    Array<ItemT>
-  >(this.itemsUrl);
+  constructor(private http: HttpClient) {
+    this.loadItems();
+  }
+
+  private loadItems(): void {
+    this.http.get<ItemT[]>(this.itemsUrl).subscribe((items) => {
+      this.itemsSubject$.next(items);
+    });
+  }
 
   public readonly itemsId$: Observable<Array<ItemIdT>> = this.items$.pipe(
     map(
@@ -28,9 +41,9 @@ export class ItemsService {
           (item: ItemT): ItemIdT => ({
             id: item.id,
             title: item.title,
-          })
-        )
-    )
+          }),
+        ),
+    ),
   );
 
   public readonly itemDetail$: Observable<ItemT> = combineLatest({
@@ -46,10 +59,10 @@ export class ItemsService {
         itemSelected: ItemT['id'];
       }): ItemT => {
         return items.find(
-          (item: ItemT): boolean => item.id === itemSelected
+          (item: ItemT): boolean => item.id === itemSelected,
         ) as ItemT;
-      }
-    )
+      },
+    ),
   );
 
   public selectItem(id: ItemT['id']): void {
@@ -57,14 +70,15 @@ export class ItemsService {
   }
 
   public addItem(newItem: ItemT): void {
-    // Assuming items$ is an array of items
-    this.items$.subscribe((items: ItemT[]) => {
-        const id = 'item203';
-        const newItemWithId = {
-          ...newItem,
-          id
-        }
-        items.push(newItemWithId);
-    });
-}
+    const currentItems = this.itemsSubject$.getValue();
+    const id = 'item' + (currentItems.length + 1);
+    const newItemWithId = {
+      id,
+      ...newItem,
+    };
+
+    const updatedItems = [...currentItems, newItemWithId];
+    this.itemsSubject$.next(updatedItems);
+    this.itemsUpdated$.next(id);
+  }
 }

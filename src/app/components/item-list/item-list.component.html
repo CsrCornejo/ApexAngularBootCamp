@@ -7,7 +7,12 @@
   <mat-card-content>
     <p>{{ contentLabel }}</p>
 
-    <mat-checkbox [(ngModel)]="offers" (ngModelChange)="onOffersChange($event); currentPage = 1">Offers!</mat-checkbox>
+    <div class="controls">
+      <mat-checkbox [(ngModel)]="offers" (ngModelChange)="onOffersChange($event); currentPage = 1">Offers!</mat-checkbox>
+      <button class="new-btn" mat-flat-button color="accent" routerLink="/new">
+        New Item
+      </button>
+    </div>
 
     <mat-form-field>
       <mat-label>{{ filterLabel }}</mat-label>
