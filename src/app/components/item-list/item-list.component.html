@@ -68,7 +68,7 @@
               <div matListItemLine>{{ item.description }}</div>
               <div matListItemMeta class="item-meta-wrap">
                 <span class="item-sample-price">{{
-                  getSamplePrice(item.prices)
+                  getSamplePrice(item.prices) | rounding | currency: 'MXN'
                 }}</span>
                 <button mat-icon-button [routerLink]="[item.id]">
                   <mat-icon>read_more</mat-icon>

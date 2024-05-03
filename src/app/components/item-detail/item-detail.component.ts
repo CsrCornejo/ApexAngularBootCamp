@@ -8,6 +8,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { RoundingPipe } from '../../pipes/rounding.pipe';
 
 @Component({
   selector: 'app-item-detail',
@@ -18,6 +19,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatCardModule,
     MatListModule,
     MatProgressSpinnerModule,
+    RoundingPipe,
   ],
   templateUrl: './item-detail.component.html',
   styleUrl: './item-detail.component.sass',

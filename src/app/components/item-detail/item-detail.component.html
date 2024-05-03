@@ -19,7 +19,7 @@
       >
       @for (price of itemDetail.prices | keyvalue; track price) {
         <mat-list-item
-        ><strong>{{price.key}}</strong> {{ price.value }}</mat-list-item
+        ><strong>{{price.key}}</strong> {{ price.value | rounding | currency: 'MXN' }}</mat-list-item
       >
       }
       <mat-divider></mat-divider>

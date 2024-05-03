@@ -20,6 +20,7 @@ import { ItemsService } from '../../app-data/items/item.service';
 import { RouterModule } from '@angular/router';
 import { PaginatePipe } from '../../pipes/paginate.pipe';
 import { PaginationComponent } from '../pagination/pagination.component';
+import { RoundingPipe } from '../../pipes/rounding.pipe';
 
 @Component({
   selector: 'app-item-list',
@@ -38,6 +39,7 @@ import { PaginationComponent } from '../pagination/pagination.component';
     RouterModule,
     PaginatePipe,
     PaginationComponent,
+    RoundingPipe,
   ],
   templateUrl: './item-list.component.html',
   styleUrl: './item-list.component.sass',
