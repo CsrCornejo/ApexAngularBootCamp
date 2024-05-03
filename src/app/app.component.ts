@@ -1,7 +1,7 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { HttpClient } from '@angular/common/http';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -11,14 +11,12 @@ import { HttpClient } from '@angular/common/http';
   styleUrl: './app.component.sass',
 })
 export class AppComponent implements OnInit {
-  title = 'ApexAngularBootCamp';
+  title = 'Apex Angular BootCamp';
   public appName: string = 'Final Exercise';
 
-  private http: HttpClient = inject(HttpClient);
+  public constructor(@Inject(DOCUMENT) private readonly document: Document) {}
 
   ngOnInit() {
-    this.http.get('/api/items').subscribe((data) => {
-      console.log(data);
-    });
+    this.document.title = `${this.title} - ${this.appName}`;
   }
 }

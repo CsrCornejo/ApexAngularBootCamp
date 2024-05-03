@@ -1,0 +1,59 @@
+<!-- ••[1]••••••••••••••••••••••••• resume-form.component.html •••••••••••••••••••••••••••••• -->
+
+<div class="app-resume-form">
+  <form
+    class="m-10 border-2 border-primary rounded-md p-6 shadow-lg shadow-primary"
+    [formGroup]="itemForm"
+    (ngSubmit)="onSubmit($event, itemForm)"
+  >
+    <legend class="legend">
+      {{ label.item }}
+    </legend>
+
+    <!-- Title -->
+    <mat-form-field class="w-full" color="primary">
+        <mat-label>{{ label.title }}</mat-label>
+        <input matInput type="text" formControlTitle="title" #titleRef />
+        @if (titleRef.value) {
+          <button
+            matSuffix
+            mat-icon-button
+            matTooltip="{{ label.clear }}"
+            matTooltipPosition="above"
+            (click)="titleRef.value = ''"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        }
+      </mat-form-field>
+
+    <!-- Description -->
+    <mat-form-field class="w-full" color="primary">
+      <mat-label>{{ label.description }}</mat-label>
+      <input
+        matInput
+        type="text"
+        formControlName="description"
+        #descriptionRef
+      />
+      @if (descriptionRef.value) {
+        <button
+          matSuffix
+          mat-icon-button
+          matTooltip="{{ label.clear }}"
+          matTooltipPosition="above"
+          (click)="descriptionRef.value = ''"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      }
+    </mat-form-field>
+
+    <!-- Form actions -->
+    <div class="form-actions">
+        <button mat-raised-button color="accent" type="submit">
+            {{ label.submit }}
+        </button>
+    </div>
+  </form>
+</div>
