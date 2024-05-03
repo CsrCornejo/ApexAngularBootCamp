@@ -14,13 +14,14 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { combineLatest, map, Observable, startWith, Subject } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable, startWith, Subject } from 'rxjs';
 import { ItemT } from '../../app-data/items/item.type';
 import { ItemsService } from '../../app-data/items/item.service';
 import { RouterModule } from '@angular/router';
 import { PaginatePipe } from '../../pipes/paginate.pipe';
 import { PaginationComponent } from '../pagination/pagination.component';
 import { RoundingPipe } from '../../pipes/rounding.pipe';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-item-list',
@@ -34,6 +35,7 @@ import { RoundingPipe } from '../../pipes/rounding.pipe';
     MatButtonModule,
     MatProgressSpinnerModule,
     MatGridListModule,
+    MatCheckboxModule,
     CommonModule,
     FormsModule,
     RouterModule,
@@ -50,13 +52,16 @@ export class ItemListComponent {
   protected readonly listTitleLabel: string = 'Items';
   private items$: Observable<Array<ItemT>> = this.itemsService.items$;
 
-  public constructor(private readonly itemsService: ItemsService, private readonly breakpointObserver: BreakpointObserver) {
+  public constructor(
+    private readonly itemsService: ItemsService,
+    private readonly breakpointObserver: BreakpointObserver,
+  ) {
     this.isAtLeastMediumBreakpoint$ = this.breakpointObserver
       .observe([Breakpoints.Medium, Breakpoints.Large, Breakpoints.XLarge])
       .pipe(
         map((breakpointState: BreakpointState): { matches: boolean } => ({
           matches: breakpointState.matches,
-        }))
+        })),
       );
   }
 
@@ -67,14 +72,22 @@ export class ItemListComponent {
   private readonly filterSubject$$: Subject<string> = new Subject<string>();
   private readonly filter$: Observable<string> =
     this.filterSubject$$.asObservable();
+
+  private readonly offersSubject$$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private readonly offers$: Observable<boolean> =
+    this.offersSubject$$.asObservable();
+
   protected filteredItems$: Observable<Array<ItemT>> = combineLatest(
     this.items$,
     this.filter$.pipe(startWith('')),
+    this.offers$,
   ).pipe(
-    map(([items, filter]: [Array<ItemT>, string]): Array<ItemT> => {
+    map(([items, filter, hasOffer]: [Array<ItemT>, string, boolean]): Array<ItemT> => {
       filter = filter.toLowerCase();
-      return items.filter((item: ItemT): boolean =>
-        item.title.toLowerCase().includes(filter),
+      return items.filter((item: ItemT): boolean => {
+        if (hasOffer && !item.offerDiscount) return false; 
+        return item.title.toLowerCase().includes(filter);
+      }
       );
     }),
   );
@@ -85,9 +98,14 @@ export class ItemListComponent {
 
   protected routerOutletIsActivated!: boolean;
   protected currentPage: number = 1;
+  protected offers: boolean = false;
 
   protected filterChangeHandler(event: string): void {
     this.filterSubject$$.next(event);
+  }
+
+  onOffersChange(newValue: boolean): void {
+    this.offersSubject$$.next(newValue);
   }
 
   protected toggleRouterOutletIsActivated(activate: boolean): void {
@@ -96,10 +114,12 @@ export class ItemListComponent {
     });
   }
 
-  protected getSamplePrice(prices: { [tag: string]: number; }) {
-    return Object.values(prices)[0];
+  protected getSamplePrice(prices: { [tag: string]: number }, offerDiscount: number = 0) {
+    const samplePrice = Object.values(prices)[0];
+    if (!offerDiscount) return samplePrice;
+    return samplePrice * (1 - (offerDiscount / 100));
   }
   test() {
     throw new Error('Method not implemented.');
-    }
+  }
 }

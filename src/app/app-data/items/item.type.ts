@@ -4,6 +4,7 @@ export type ItemT = {
   prices: { [tag: string]: number };
   photos: string[];
   description: string;
+  offerDiscount?: number;
 };
 
 export type ItemIdT = Pick<ItemT, 'id' | 'title'>;

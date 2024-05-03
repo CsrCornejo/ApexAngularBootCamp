@@ -14,6 +14,7 @@ export class ItemData {
         "https://api.slingacademy.com/public/sample-photos/4.jpeg"
       ],
       description: 'Much technology how within rather him lay why part actually system increase feel.',
+      offerDiscount: 20,
     },
     {
       id: 'item2',
@@ -26,6 +27,7 @@ export class ItemData {
         "https://api.slingacademy.com/public/sample-photos/1.jpeg"
       ],
       description: 'Skill drug college contain herself future seat human yes approach how then maybe public summer play commercial anything woman include million body measure government clearly question quickly parent.',
+      offerDiscount: 30,
     },
     {
       id: 'item3',
@@ -92,6 +94,7 @@ export class ItemData {
         "https://api.slingacademy.com/public/sample-photos/1.jpeg",
       ],
       description: 'Satisfaction Guaranteed. Return or exchange any order within 30 days.Designed and sold by Hafeez Center in the United States. Satisfaction Guaranteed. Return or exchange any order within 30 days.',
+      offerDiscount: 10,
     },
     {
       id: 'item8',
@@ -145,6 +148,7 @@ export class ItemData {
         "https://api.slingacademy.com/public/sample-photos/1.jpeg",
       ],
       description: 'Features: Casual, Short Sleeve, Letter Print,V-Neck,Fashion Tees, The fabric is soft and has some stretch.',
+      offerDiscount: 22,
     },
     {
       id: 'item12',
@@ -174,6 +178,7 @@ export class ItemData {
         "https://api.slingacademy.com/public/sample-photos/6.jpeg",
       ],
       description: 'Last seen updated album on the perfect gift for the season for the children',
+      offerDiscount: 5,
     },
     {
       id: 'item14',
@@ -229,6 +234,7 @@ export class ItemData {
         "https://api.slingacademy.com/public/sample-photos/4.jpeg",
       ],
       description: 'All umbrella related items in our shop.',
+      offerDiscount: 50,
     },
     {
       id: 'item18',
@@ -240,6 +246,7 @@ export class ItemData {
         "https://api.slingacademy.com/public/sample-photos/7.jpeg",
       ],
       description: 'Apple.',
+      offerDiscount: 2,
     },
     {
       id: 'item19',
@@ -251,6 +258,7 @@ export class ItemData {
         "https://api.slingacademy.com/public/sample-photos/8.jpeg",
       ],
       description: 'Orange.',
+      offerDiscount: 10,
     },
     {
       id: 'item19',
@@ -279,6 +287,7 @@ export class ItemData {
         "https://api.slingacademy.com/public/sample-photos/2.jpeg",
       ],
       description: 'Song in different languages perfect for education.',
+      offerDiscount: 20,
     },
   ];
 }
