@@ -55,4 +55,16 @@ export class ItemsService {
   public selectItem(id: ItemT['id']): void {
     this.itemSelectedSubject$$.next(id);
   }
+
+  public addItem(newItem: ItemT): void {
+    // Assuming items$ is an array of items
+    this.items$.subscribe((items: ItemT[]) => {
+        const id = 'item203';
+        const newItemWithId = {
+          ...newItem,
+          id
+        }
+        items.push(newItemWithId);
+    });
+}
 }

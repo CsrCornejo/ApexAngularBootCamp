@@ -9,7 +9,7 @@ export const RESUME_FORM_LABELS: Record<string, string> = {
     addPhoto: 'Add photo',
     removePhoto: 'Remove photo',
     photos: 'Photos',
-    photo: 'Photo',
+    photo: 'Photo Url',
 
     addPrice: 'Add price',
     removePrice: 'Remove price',

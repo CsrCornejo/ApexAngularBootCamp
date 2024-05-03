@@ -65,6 +65,9 @@
       </mat-error>
     </mat-form-field>
 
+    <!-- Photos -->
+    <ng-container [ngTemplateOutlet]="photosFieldsetRef"></ng-container>
+
     <!-- Form actions -->
     <div class="form-actions">
       <button
@@ -78,6 +81,79 @@
     </div>
   </form>
 </div>
+
+<!-- ••[3]••••• Photos •••••••••• -->
+<ng-template #photosFieldsetRef [formGroup]="itemForm">
+  <fieldset class="fieldset mt-4" formArrayName="photos">
+    <legend class="legend">
+      {{ label.photos }}
+    </legend>
+
+    <div class="flex justify-end">
+      <button
+        mat-mini-fab
+        color="accent"
+        matTooltip="{{ label.addPhoto }}"
+        matTooltipPosition="above"
+        type="button"
+        (click)="addPhoto()"
+      >
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+
+    @for (
+      photoControl of itemForm.controls.photos.controls;
+      track photoControl
+    ) {
+      <div class="flex mt-4" [class.mt-6]="$first">
+        <div class="flex-1">
+          <!-- Photo -->
+          <mat-form-field class="w-full" color="primary">
+            <mat-label>{{ label.photo }}</mat-label>
+            <input matInput type="text" [formControlName]="$index" #photoRef />
+            @if (photoRef.value) {
+              <button
+                type="button"
+                matSuffix
+                mat-icon-button
+                matTooltip="{{ label.clear }}"
+                matTooltipPosition="above"
+                (click)="itemForm.controls.photos.at($index).reset()"
+              >
+                <mat-icon>close</mat-icon>
+              </button>
+            }
+            <mat-error>
+              <ng-container
+                *ngTemplateOutlet="
+                  formErrorsRef;
+                  context: {
+                    $implicit: itemForm.controls.photos.at($index)
+                  }
+                "
+              ></ng-container>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        @if ($count > 1) {
+          <div class="ml-4">
+            <button
+              mat-mini-fab
+              color="primary"
+              matTooltip="{{ label.removePhoto }}"
+              matTooltipPosition="above"
+              type="button"
+              (click)="removePhoto($index)"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        }
+      </div>
+    }
+  </fieldset>
+</ng-template>
 
 <ng-template #formErrorsRef let-formControl>
   @if (formControl.hasError("required")) {

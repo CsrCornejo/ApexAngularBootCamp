@@ -7,7 +7,7 @@ export type PriceT = {
 export type PhotosT = string;
 
 export type ItemT = {
-  id: string;
+  id?: string;
   title: string;
   prices: PriceT;
   photos: Array<PhotosT>;

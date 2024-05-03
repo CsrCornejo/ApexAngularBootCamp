@@ -1,11 +1,13 @@
-import { FormGroup, FormControl } from '@angular/forms';
-import { ItemFormT } from '../../entities/item.type';
+import { FormGroup, FormControl, FormArray } from '@angular/forms';
+import { ItemFormT, PhotosT } from '../../entities/item.type';
+
+export type PhotoFormControlT = FormControl<PhotosT>;
 
 export type ItemFormGroupT = FormGroup<{
   id: FormControl<ItemFormT['id'] | null>;
-  title: FormControl<ItemFormT['title'] | null>;
+  title: FormControl<ItemFormT['title']>;
   // prices: Array<PriceT>;
-  // photos: Array<PhotosT>;
-  description: FormControl<ItemFormT['description'] | null>;
+  photos: FormArray<PhotoFormControlT>;
+  description: FormControl<ItemFormT['description']>;
   offerDiscount?: FormControl<ItemFormT['offerDiscount'] | null>;
 }>;
