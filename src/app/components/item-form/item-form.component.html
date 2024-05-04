@@ -2,7 +2,7 @@
   <form
     class="m-10 border-2 border-primary rounded-md p-6 shadow-lg shadow-primary"
     [formGroup]="itemForm"
-    (ngSubmit)="onSubmit($event, itemForm)"
+    (ngSubmit)="onSubmit()"
   >
     <legend class="legend">
       {{ label.item }}
@@ -67,32 +67,40 @@
 
     <!-- OfferDiscount -->
     <mat-form-field class="w-full" color="primary">
-        <mat-label>{{ label.offerDiscount }}</mat-label>
-        <input matInput type="number" formControlName="offerDiscount" #offerDiscountRef />
-        @if (offerDiscountRef.value) {
-          <button
-            type="button"
-            matSuffix
-            mat-icon-button
-            matTooltip="{{ label.clear }}"
-            matTooltipPosition="above"
-            (click)="itemForm.controls.offerDiscount.reset()"
-          >
-            <mat-icon>close</mat-icon>
-          </button>
-        }
-        <mat-error>
-          <ng-container
-            *ngTemplateOutlet="
-              formErrorsRef;
-              context: { $implicit: itemForm.controls.offerDiscount }
-            "
-          ></ng-container>
-        </mat-error>
-      </mat-form-field>
+      <mat-label>{{ label.offerDiscount }}</mat-label>
+      <input
+        matInput
+        type="number"
+        formControlName="offerDiscount"
+        #offerDiscountRef
+      />
+      @if (offerDiscountRef.value) {
+        <button
+          type="button"
+          matSuffix
+          mat-icon-button
+          matTooltip="{{ label.clear }}"
+          matTooltipPosition="above"
+          (click)="itemForm.controls.offerDiscount.reset()"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      }
+      <mat-error>
+        <ng-container
+          *ngTemplateOutlet="
+            formErrorsRef;
+            context: { $implicit: itemForm.controls.offerDiscount }
+          "
+        ></ng-container>
+      </mat-error>
+    </mat-form-field>
 
     <!-- Photos -->
     <ng-container [ngTemplateOutlet]="photosFieldsetRef"></ng-container>
+
+    <!-- Prices -->
+    <ng-container [ngTemplateOutlet]="pricesFieldsetRef"></ng-container>
 
     <!-- Form actions -->
     <div class="form-actions">
@@ -107,6 +115,127 @@
     </div>
   </form>
 </div>
+
+<!-- ••[3]••••• Prices •••••••••• -->
+<ng-template #pricesFieldsetRef [formGroup]="itemForm">
+  <fieldset class="fieldset mt-4" formArrayName="prices">
+    <legend class="legend">
+      {{ label.prices }}
+    </legend>
+
+    <div class="flex justify-end">
+      <button
+        type="button"
+        mat-mini-fab
+        color="accent"
+        matTooltip="{{ label.addPrice }}"
+        matTooltipPosition="above"
+        type="button"
+        (click)="addPrice()"
+      >
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+
+    @for (
+      priceControl of itemForm.controls.prices.controls;
+      track priceControl
+    ) {
+      <fieldset
+        class="price fieldset border-slate-700 mt-4"
+        [formGroupName]="$index"
+      >
+        <legend class="font-normal capitalize px-2 text-slate-500">
+          {{ label.price }} ◦ {{ $index + 1 }}
+        </legend>
+        <div class="flex">
+          <div class="flex-1">
+            <!-- Title -->
+            <mat-form-field class="w-full" color="primary">
+              <mat-label>{{ label.priceTag }}</mat-label>
+              <input matInput type="text" formControlName="tag" #priceTagRef />
+              @if (priceTagRef.value) {
+                <button
+                  type="button"
+                  matSuffix
+                  mat-icon-button
+                  matTooltip="{{ label.clear }}"
+                  matTooltipPosition="above"
+                  (click)="
+                    itemForm.controls.prices.at($index).controls.tag.reset()
+                  "
+                >
+                  <mat-icon>close</mat-icon>
+                </button>
+              }
+              <mat-error>
+                <ng-container
+                  *ngTemplateOutlet="
+                    formErrorsRef;
+                    context: {
+                      $implicit:
+                        itemForm.controls.prices.at($index).controls.tag
+                    }
+                  "
+                ></ng-container>
+              </mat-error>
+            </mat-form-field>
+            <!-- Description -->
+            <mat-form-field class="w-full" color="primary">
+              <mat-label>{{ label.pricePrice }}</mat-label>
+              <input
+                matInput
+                type="number"
+                formControlName="price"
+                #pricePriceRef
+              />
+              @if (pricePriceRef.value) {
+                <button
+                  type="button"
+                  matSuffix
+                  mat-icon-button
+                  matTooltip="{{ label.clear }}"
+                  matTooltipPosition="above"
+                  (click)="
+                    itemForm.controls.prices.at($index).controls.price.reset()
+                  "
+                >
+                  <mat-icon>close</mat-icon>
+                </button>
+              }
+              <mat-error>
+                <ng-container
+                  *ngTemplateOutlet="
+                    formErrorsRef;
+                    context: {
+                      $implicit:
+                        itemForm.controls.prices.at($index).controls.price
+                    }
+                  "
+                ></ng-container>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          @if ($count > 1) {
+            <div class="ml-4">
+              <button
+                type="button"
+                mat-mini-fab
+                color="primary"
+                matTooltip="{{ label.removePrice }}"
+                matTooltipPosition="above"
+                type="button"
+                (click)="removePrice($index)"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          }
+        </div>
+      </fieldset>
+    }
+  </fieldset>
+</ng-template>
 
 <!-- ••[3]••••• Photos •••••••••• -->
 <ng-template #photosFieldsetRef [formGroup]="itemForm">

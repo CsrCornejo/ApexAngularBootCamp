@@ -10,7 +10,11 @@ import {
   Validators,
 } from '@angular/forms';
 import { RESUME_FORM_LABELS } from './item-form.labels';
-import { ItemFormGroupT, PhotoFormControlT } from './item-form.type';
+import {
+  ItemFormGroupT,
+  PhotoFormControlT,
+  PriceFormGroupT,
+} from './item-form.type';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -57,13 +61,19 @@ export class ItemFormComponent implements OnInit, OnDestroy {
       '^(https?|ftp)://[\\w.-]+(\\.[\\w.-]+)+([/?#][\\w\\.-]*)*$',
     ),
   ];
+  private sentenceTagValidators: Array<ValidatorFn> = [
+    Validators.required,
+    Validators.pattern(/^[A-Za-z0-9]+$/),
+  ];
 
-  protected validatePercentage(control: AbstractControl): ValidationErrors | null {
+  protected validatePercentage(
+    control: AbstractControl,
+  ): ValidationErrors | null {
     const value = control.value;
     if (!value) return null;
 
     const isValid = /^\d{1,2}$/.test(value); // Matches 1 or 2 digits
-  
+
     return isValid ? null : { invalidPercentage: true };
   }
 
@@ -78,6 +88,7 @@ export class ItemFormComponent implements OnInit, OnDestroy {
     }),
     offerDiscount: new FormControl(0, [this.validatePercentage]),
     photos: new FormArray([this.getNewPhoto()], Validators.minLength(1)),
+    prices: new FormArray([this.getNewPrice()], Validators.minLength(1)),
   });
 
   private getNewPhoto(): PhotoFormControlT {
@@ -86,8 +97,23 @@ export class ItemFormComponent implements OnInit, OnDestroy {
       validators: this.sentenceUrlValidators,
     });
   }
+  private getNewPrice(): PriceFormGroupT {
+    return new FormGroup({
+      tag: new FormControl('', {
+        nonNullable: true,
+        validators: this.sentenceTagValidators,
+      }),
+      price: new FormControl(0, {
+        nonNullable: true,
+        validators: [Validators.pattern(/^[0-9]+(\.[0-9]+)?$/)],
+      }),
+    });
+  }
   protected addPhoto(): void {
     this.itemForm.controls.photos.push(this.getNewPhoto());
+  }
+  protected addPrice(): void {
+    this.itemForm.controls.prices.push(this.getNewPrice());
   }
 
   protected removePhoto(skillIndex: number): void {
@@ -96,17 +122,25 @@ export class ItemFormComponent implements OnInit, OnDestroy {
     }
   }
 
+  protected removePrice(capabilityIndex: number): void {
+    if (this.itemForm.controls.prices.controls.length > 1) {
+      this.itemForm.controls.prices.removeAt(capabilityIndex);
+    }
+  }
+
   public constructor(
     private readonly itemsService: ItemsService,
-    private router: Router
+    private router: Router,
   ) {}
   ngOnDestroy(): void {
     this.itemsUpdatedSubscription.unsubscribe();
   }
   ngOnInit(): void {
-    this.itemsUpdatedSubscription = this.itemsService.itemsUpdated$.subscribe((e) => {
-      this.router.navigate(['/items', e]);
-    });
+    this.itemsUpdatedSubscription = this.itemsService.itemsUpdated$.subscribe(
+      (e) => {
+        this.router.navigate(['/items', e]);
+      },
+    );
   }
 
   // This removes the attributes that have null values
@@ -116,38 +150,42 @@ export class ItemFormComponent implements OnInit, OnDestroy {
   private cleanEmpty(obj: any): any {
     if (Array.isArray(obj)) {
       return obj
-        .map((v) => (v && typeof v === 'object') ? this.cleanEmpty(v) : v)
+        .map((v) => (v && typeof v === 'object' ? this.cleanEmpty(v) : v))
         .filter((v) => !(v == null));
     } else {
       return Object.entries(obj)
-        .map(([k, v]) => [k, v && typeof v === 'object' ? this.cleanEmpty(v) : v])
+        .map(([k, v]) => [
+          k,
+          v && typeof v === 'object' ? this.cleanEmpty(v) : v,
+        ])
         .reduce((a, [k, v]) => (v == null ? a : { ...a, [k]: v }), {});
     }
   }
 
-  protected onSubmit(event: SubmitEvent, form: ItemFormGroupT): void {
-    console.log('%c\nonSubmit', 'color: SpringGreen');
-    console.log('event: %O', event);
-    console.log('form: %O', form);
-    console.log('this.itemForm: %O', this.itemForm);
-    console.log(this.itemForm.value);
-    const exampleItem = {
-      title: 'Song of the day past',
-      prices: {
-        'Eng': 50.12,
-        'Esp': 50.12,
-        'Tuk': 50.12,
-      },
-      photos: [
-        "https://api.slingacademy.com/public/sample-photos/2.jpeg",
-        "https://api.slingacademy.com/public/sample-photos/2.jpeg",
-        "https://api.slingacademy.com/public/sample-photos/2.jpeg",
-      ],
-      description: 'Song in different languages perfect for education.',
-      offerDiscount: 22,
+  private arrayToObject(arr: { tag: string; price: number }[]) {
+    const pricesObject: { [tag: string]: number } = {};
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    arr.forEach((item: { tag: string; price: number }) => {
+      pricesObject[item.tag] = item.price;
+    });
+    return pricesObject;
+  }
+
+  protected onSubmit(): void {
+    // console.log('%c\nonSubmit', 'color: SpringGreen');
+    // console.log('event: %O', event);
+    // console.log('form: %O', form);
+    // console.log('this.itemForm: %O', this.itemForm);
+    console.log('this.itemForm value: %O', this.itemForm.value);
+    const cleanedObj = this.cleanEmpty(this.itemForm.value);
+
+    const priceArray = cleanedObj.prices;
+    const pricesObj = this.arrayToObject(priceArray);
+
+    const finalObj = {
+      ...cleanedObj,
+      prices: pricesObj,
     };
-    const cleanedObj = this.cleanEmpty(exampleItem);
-    console.log(cleanedObj);
-    this.itemsService.addItem(cleanedObj);
+    this.itemsService.addItem(finalObj);
   }
 }
