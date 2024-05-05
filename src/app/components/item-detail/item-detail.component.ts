@@ -1,4 +1,4 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ItemT } from '../../entities/item.type';
 import { ActivatedRoute, Params } from '@angular/router';
@@ -24,7 +24,7 @@ import { RoundingPipe } from '../../pipes/rounding.pipe';
   templateUrl: './item-detail.component.html',
   styleUrl: './item-detail.component.sass',
 })
-export class ItemDetailComponent implements AfterViewInit {
+export class ItemDetailComponent implements OnInit {
   protected readonly titleLabel: string = 'Item details';
   protected readonly loadingLabel: string = 'Loading item...';
 
@@ -35,9 +35,11 @@ export class ItemDetailComponent implements AfterViewInit {
     private readonly itemsService: ItemsService,
   ) {}
 
-  public ngAfterViewInit(): void {
+  public ngOnInit(): void {
     this.activatedRoute.params.subscribe((params: Params): void => {
-      this.itemsService.selectItem(params['id']);
+      Promise.resolve().then(() => {
+        this.itemsService.selectItem(params['id']);
+      });
     });
   }
 
