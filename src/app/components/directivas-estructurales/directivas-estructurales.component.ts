@@ -9,5 +9,5 @@ import { CommonModule } from '@angular/common';
   styleUrl: './directivas-estructurales.component.sass'
 })
 export class DirectivasEstructuralesComponent {
-  public lettersArray: string[] = ['A', 'B', 'C'];
+  public letters: string[] = ['A', 'B', 'C'];
 }

@@ -1,13 +1,13 @@
 <div>Directivas estructurales</div>
 <h2>NgFor</h2>
 <ul>
-    <li *ngFor="let letter of lettersArray; index as i;">
+    <li *ngFor="let letter of letters">
         {{letter}}
     </li>
 </ul>
 <h2>NgIf</h2>
 <ul>
-    <ng-container *ngFor="let letter of lettersArray; index as i;">
+    <ng-container *ngFor="let letter of letters">
         <li *ngIf="letter !== 'B'">
             {{letter}}
         </li>
@@ -15,7 +15,7 @@
 </ul>
 <h2>NgSwitch</h2>
 <ul>
-    <ng-container *ngFor="let letter of lettersArray; index as i;">
+    <ng-container *ngFor="let letter of letters">
         <li [ngSwitch]="letter">
             <span *ngSwitchCase="'A'">1</span>
             <span *ngSwitchCase="'B'">2</span>
