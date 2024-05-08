@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { CapitalizeDirectiveDirective } from '../../directives/capitalize-directive.directive';
+import { CapitalizeDirective } from '../../directives/capitalize.directive';
 @Component({
   selector: 'app-directivas-custom',
   standalone: true,
-  imports: [CapitalizeDirectiveDirective],
+  imports: [CapitalizeDirective],
   templateUrl: './directivas-custom.component.html',
   styleUrl: './directivas-custom.component.sass'
 })
