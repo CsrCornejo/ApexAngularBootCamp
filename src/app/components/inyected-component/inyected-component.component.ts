@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
-import { InyectedServiceService } from '../../services/inyected-service.service';
+import { InyectedService } from '../../services/inyected-service.service';
 
 @Component({
   selector: 'app-inyected-component',
   templateUrl: './inyected-component.component.html',
   styleUrl: './inyected-component.component.sass'
 })
-export class InyectedComponentComponent {
+export class InyectedComponent {
   public inyectedServiceData: string[] = [];
-  constructor(private inyectedService: InyectedServiceService) {
+  constructor(private inyectedService: InyectedService) {
     this.inyectedServiceData = this.inyectedService.inyectedData;
   }
 }

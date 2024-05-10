@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RootServiceService } from '../../services/root-service.service';
+import { RootService } from '../../services/root-service.service';
 
 @Component({
   selector: 'app-root-component',
@@ -8,9 +8,9 @@ import { RootServiceService } from '../../services/root-service.service';
   templateUrl: './root-component.component.html',
   styleUrl: './root-component.component.sass',
 })
-export class RootComponentComponent {
+export class RootComponent {
   public persistentData: string = '';
-  constructor(private readonly rootService: RootServiceService) {
+  constructor(private readonly rootService: RootService) {
     this.persistentData = this.rootService.persistentData;
   }
 }

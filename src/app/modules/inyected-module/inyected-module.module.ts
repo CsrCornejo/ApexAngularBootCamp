@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { InyectedComponentComponent } from '../../components/inyected-component/inyected-component.component';
-import { InyectedServiceService } from '../../services/inyected-service.service';
-import { InyectedComponent2Component } from '../../components/inyected-component2/inyected-component2.component';
+import { InyectedComponent } from '../../components/inyected-component/inyected-component.component';
+import { InyectedService } from '../../services/inyected-service.service';
+import { Inyected2Component } from '../../components/inyected-component2/inyected-component2.component';
 
 @NgModule({
-  declarations: [InyectedComponentComponent, InyectedComponent2Component],
+  declarations: [InyectedComponent, Inyected2Component],
   imports: [
     CommonModule
   ],
-  providers: [InyectedServiceService],
-  exports: [InyectedComponentComponent, InyectedComponent2Component]
+  providers: [InyectedService],
+  exports: [InyectedComponent, Inyected2Component]
 })
-export class InyectedModuleModule { }
+export class InyectedModule { }
