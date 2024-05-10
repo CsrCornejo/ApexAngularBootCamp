@@ -58,7 +58,7 @@ export class ItemFormComponent implements OnInit, OnDestroy {
   private sentenceUrlValidators: Array<ValidatorFn> = [
     Validators.required,
     Validators.pattern(
-      '^(https?|ftp)://[\\w.-]+(\\.[\\w.-]+)+([/?#][\\w\\.-]*)*$',
+      "^(https?|ftp)://[\\w.-]+(\\.[\\w.-]+)+([/?#][\\w\\.-~:@!$&'()*+,;=]*)*$",
     ),
   ];
   private sentenceTagValidators: Array<ValidatorFn> = [
@@ -77,6 +77,39 @@ export class ItemFormComponent implements OnInit, OnDestroy {
     return isValid ? null : { invalidPercentage: true };
   }
 
+  protected customUniqueValidator(propertyName: string): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const pricesArray = control as FormArray;
+      let hasDuplicates: boolean = false;
+
+      // Map values to a map , we can keep track of how many times a tag is used
+      const valueCounts = new Map<string | number, number>();
+      pricesArray.controls.forEach((c) => {
+        const value = c.value[propertyName];
+        const count = valueCounts.get(value) || 0;
+        valueCounts.set(value, count + 1);
+      });
+
+      // For each price, go to its tag field and add the priceNotUnique if the tag count is more than 1
+      pricesArray.controls.forEach((c: AbstractControl) => {
+        const formGroup = c as FormGroup;
+        const value = formGroup.controls[propertyName].value;
+        const count = valueCounts.get(value) || 0;
+        if (count > 1) {
+          formGroup.controls[propertyName].setErrors({ priceNotUnique: true });
+          hasDuplicates = true;
+        } else {
+          // If tag is unique but has the priceNotUnique error, then reset it by revalidating
+          if (formGroup.controls[propertyName].hasError('priceNotUnique')) {
+            formGroup.controls[propertyName].updateValueAndValidity();
+          }
+        }
+      });
+
+      return hasDuplicates ? { priceNotUnique: true } : null;
+    };
+  }
+
   protected itemForm: ItemFormGroupT = new FormGroup({
     title: new FormControl('', {
       nonNullable: true,
@@ -88,7 +121,10 @@ export class ItemFormComponent implements OnInit, OnDestroy {
     }),
     offerDiscount: new FormControl(0, [this.validatePercentage]),
     photos: new FormArray([this.getNewPhoto()], Validators.minLength(1)),
-    prices: new FormArray([this.getNewPrice()], Validators.minLength(1)),
+    prices: new FormArray(
+      [this.getNewPrice()],
+      [Validators.minLength(1), this.customUniqueValidator('tag')],
+    ),
   });
 
   private getNewPhoto(): PhotoFormControlT {

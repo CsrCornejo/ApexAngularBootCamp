@@ -22,4 +22,5 @@ export const RESUME_FORM_LABELS: Record<string, string> = {
   requiredErrorField: 'Required Field',
   patternErrorField: 'Invalid character on this field',
   invalidPercentageErrorField: 'Invalid percentage (up to 2 digits)',
+  priceNotUniqueErrorField: 'Price Tags need to be unique'
 };

@@ -1,6 +1,6 @@
 <mat-chip-set>
   <mat-chip
-    *ngFor="let page of pages; let i = index"
+    *ngFor="let page of pages"
     [disabled]="page === currentPage"
     (click)="selectPage(page)"
     color="primary"

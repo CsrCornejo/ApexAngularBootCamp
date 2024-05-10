@@ -317,5 +317,7 @@
     {{ label.patternErrorField }}
   } @else if (formControl.hasError("invalidPercentage")) {
     {{ label.invalidPercentageErrorField }}
+  } @else if (formControl.hasError("priceNotUnique")) {
+    {{ label.priceNotUniqueErrorField }}
   }
 </ng-template>
