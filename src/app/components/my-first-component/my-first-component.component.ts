@@ -2,11 +2,9 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-my-first-component',
-  standalone: true,
-  imports: [],
   templateUrl: './my-first-component.component.html',
   styleUrl: './my-first-component.component.sass'
 })
-export class MyFirstComponentComponent {
+export class MyFirstComponent {
 
 }
