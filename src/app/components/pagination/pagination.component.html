@@ -1,0 +1,10 @@
+<mat-chip-set>
+  <mat-chip
+    *ngFor="let page of pages"
+    [disabled]="page === currentPage"
+    (click)="selectPage(page)"
+    color="primary"
+  >
+    {{ page }}
+  </mat-chip>
+</mat-chip-set>

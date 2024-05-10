@@ -1,0 +1,117 @@
+<mat-card
+  *ngIf="isAtLeastMediumBreakpoint$ | async as isAtLeastMediumBreakpoint"
+>
+  <mat-card-header>
+    <mat-card-title>{{ titleLabel | uppercase }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <p>{{ contentLabel }}</p>
+
+    <div class="controls">
+      <mat-checkbox [(ngModel)]="offers" (ngModelChange)="onOffersChange($event); currentPage = 1">Offers!</mat-checkbox>
+      <button class="new-btn" mat-flat-button color="accent" routerLink="/new">
+        New Item
+      </button>
+    </div>
+
+    <mat-form-field>
+      <mat-label>{{ filterLabel }}</mat-label>
+      <input
+        matInput
+        type="text"
+        [(ngModel)]="filterValue"
+        (ngModelChange)="filterChangeHandler($event); currentPage = 1"
+      />
+      <button
+        *ngIf="filterValue"
+        matSuffix
+        mat-icon-button
+        (click)="filterValue = ''; filterChangeHandler(''); currentPage = 1"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <ng-container
+      *ngIf="filteredItems$ | async as filteredItems; else loadingRef"
+    >
+      <mat-grid-list
+        [cols]="
+          routerOutletIsActivated
+            ? isAtLeastMediumBreakpoint.matches
+              ? 3
+              : 1
+            : 1
+        "
+        gutterSize="16"
+        [rowHeight]="
+          routerOutletIsActivated
+            ? isAtLeastMediumBreakpoint.matches
+              ? 600
+              : '3:2'
+            : '1:2'
+        "
+      >
+        <mat-grid-tile
+          [colspan]="
+            routerOutletIsActivated
+              ? isAtLeastMediumBreakpoint.matches
+                ? 2
+                : 1
+              : 1
+          "
+        >
+          <mat-list *ngIf="filteredItems.length; else noItemsRef">
+            <div mat-subheader>{{ listTitleLabel }}</div>
+            <mat-list-item *ngFor="let item of filteredItems | paginate: currentPage">
+              <img
+                matListItemAvatar
+                alt=""
+                [src]="item.photos[0]"
+                width="40"
+                height="40"
+              />
+              <div matListItemTitle>{{ item.title | titlecase }}</div>
+              <div matListItemLine>{{ item.description }}</div>
+              <div matListItemMeta class="item-meta-wrap">
+                <span class="item-sample-price" [ngClass]="{ 'item-discounted': item.offerDiscount}">{{
+                  getSamplePrice(item.prices) | rounding | currency: 'MXN'
+                }}</span>
+                @if (item.offerDiscount) {
+                  <span class="item-sample-price" [style]="{ color: 'red', 'margin-left': '5px' }">{{
+                    getSamplePrice(item.prices, item.offerDiscount) | rounding | currency: 'MXN'
+                  }}</span>
+                }
+                <button mat-icon-button [routerLink]="[item.id]">
+                  <mat-icon>read_more</mat-icon>
+                </button>
+              </div>
+            </mat-list-item>
+          </mat-list>
+          <app-pagination [(currentPage)]="currentPage" [itemsLength]="filteredItems.length"></app-pagination>
+        </mat-grid-tile>
+        <!-- No items -->
+        <ng-template #noItemsRef>
+          <mat-card>
+            <mat-card-content>{{ noItemsLabel }}</mat-card-content>
+          </mat-card>
+        </ng-template>
+        <mat-grid-tile
+          [colspan]="routerOutletIsActivated ? 1 : 0"
+          [class.without-border]="!routerOutletIsActivated"
+        >
+          <router-outlet
+            (activate)="toggleRouterOutletIsActivated(true)"
+            (deactivate)="toggleRouterOutletIsActivated(false)"
+          ></router-outlet>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </ng-container>
+
+    <ng-template #loadingRef>
+      <div class="spinner-container">
+        <mat-spinner color="accent" [diameter]="40"></mat-spinner>
+      </div>
+    </ng-template>
+  </mat-card-content>
+</mat-card>
